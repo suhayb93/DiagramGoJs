@@ -1,81 +1,96 @@
 import * as go from 'gojs';
 
-const mockData = {
-    mainNode: 'Some Thing Else',
-    children:
-        [
+
+
+export const getSearchResult = (value) => {
+    const mockData = {
+        mainNode: 'Some Thing Else',
+        children:
+            [
+                {
+                    name: 'child 1',
+                    children: [
+                        {
+                            name: 'sub child 1'
+                        },
+                        {
+                            name: 'sub child 1'
+                        },
+                        {
+                            name: 'sub child 1'
+                        }
+                    ]
+                },
+                {
+                    name: 'child 2',
+                    children: [
+                        {
+                            name: 'sub child 2'
+                        },
+                        {
+                            name: 'sub child 2'
+                        },
+                    ]
+
+                },
+                {
+                    name: 'child 3',
+                    children: [
+                        {
+                            name: 'sub child 3'
+                        },
+                        {
+                            name: 'sub child 3'
+                        },
+                        {
+                            name: 'sub child 3'
+                        }
+                    ]
+                }
+            ],
+        parents: [
             {
-                name: 'child 1',
-                children: [
+                name: 'parent 1',
+                parents: [
                     {
-                        name: 'sub child 1'
+                        name: 'Grand Parent 1',
+                        parents: [
+                            { name: 'sub Grand Parent 1' },
+                            { name: 'sub Grand Parent 1' },
+                            { name: 'sub Grand Parent 1' },
+                            { name: 'sub Grand Parent 1' }
+
+                        ]
                     },
                     {
-                        name: 'sub child 1'
-                    },
-                    {
-                        name: 'sub child 1'
+                        name: 'Grand Parent 2',
+                        parents: [
+                            { name: 'sub Grand Parent 2' },
+                            { name: 'sub Grand Parent 2' },
+                            { name: 'sub Grand Parent 2' },
+                            { name: 'sub Grand Parent 3' }
+
+                        ]
                     }
                 ]
             },
             {
-                name: 'child 2',
-                children: [
+                name: 'parent 2',
+                parents: [
                     {
-                        name: 'sub child 2'
+                        name: 'Grand Parent 2'
                     },
                     {
-                        name: 'sub child 2'
-                    },
-                ]
-
-            },
-            {
-                name: 'child 3',
-                children: [
-                    {
-                        name: 'sub child 3'
-                    },
-                    {
-                        name: 'sub child 3'
-                    },
-                    {
-                        name: 'sub child 3'
+                        name: 'Grand Parent 2'
                     }
                 ]
             }
-        ],
-    parents: [
-        {
-            name: 'parent 1',
-            parents: [
-                {
-                    name: 'Grand Parent 1'
-                },
-                {
-                    name: 'Grand Parent 1'
-                }
-            ]
-        },
-        {
-            name: 'parent 2',
-            parents: [
-                {
-                    name: 'Grand Parent 2'
-                },
-                {
-                    name: 'Grand Parent 2'
-                }
-            ]
-        }
-    ]
-}
-
-export const getSearchResult = (value) => {
+        ]
+    }
     // call Api here
     mockData.mainNode = value
 
-    fetch('localhost:3440/getData', 'GET')
+    // fetch('localhost:3440/getData', 'GET')
 
 
 
@@ -92,8 +107,8 @@ export function initDiagram() {
         $(go.Diagram,
             {
                 'undoManager.isEnabled': true,  // must be set to allow for model change listening
-                // 'undoManager.maxHistoryLength': 3,  // uncomment disable undo/redo functionality
                 'clickCreatingTool.archetypeNodeData': { text: 'new node', color: 'lightblue' },
+
                 model: new go.GraphLinksModel(
                     {
                         linkKeyProperty: 'key'  // IMPORTANT! must be defined for merges and data sync when using GraphLinksModel
@@ -104,15 +119,19 @@ export function initDiagram() {
     diagram.nodeTemplate =
         $(go.Node, 'Auto',  // the Shape will go around the TextBlock
             new go.Binding('location', 'loc', go.Point.parse).makeTwoWay(go.Point.stringify),
+            { cursor: "pointer" },
             $(go.Shape, 'RoundedRectangle',
                 { name: 'SHAPE', fill: 'white', strokeWidth: 0 },
-                // Shape.fill is bound to Node.data.color
                 new go.Binding('fill', 'color')),
             $(go.TextBlock,
-                { margin: 8, editable: true },  // some room around the text
-                new go.Binding('text').makeTwoWay()
-            )
+                { margin: 8, editable: false },  // some room around the text
+                new go.Binding('text', 'text').makeTwoWay(),
+            ),
+            // $("TreeExpanderButton")
         );
 
+    diagram.layout = new go.LayeredDigraphLayout({ direction: 270, layerSpacing: 35 })
     return diagram;
+
 }
+

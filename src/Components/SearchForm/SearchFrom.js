@@ -1,13 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import { GlobalStore } from '../../Utils/context';
 
 const SearchFrom = (props) => {
 
+    const store = useContext(GlobalStore);
     const [searchTxt, setSearchTxt] = useState('');
 
     const onFormSubmit = (e) => {
         e.preventDefault();
         if ('onSubmit' in props) {
             props.onSubmit(searchTxt)
+            store.clearHistory();
         }
 
     }
