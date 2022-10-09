@@ -15,6 +15,7 @@ const GoJsDiagram = (props) => {
 
 
 
+    // Receiving data from search component
     React.useEffect(() => {
         if (props.initData) {
             generateNodes(props.initData)
@@ -27,6 +28,7 @@ const GoJsDiagram = (props) => {
         const diagram = diagramRef.current.getDiagram();
 
         if (diagram instanceof go.Diagram) {
+            // Envent handler when user click on the node
             diagram.addDiagramListener('ObjectSingleClicked', function (e) {
                 const part = e.subject.part;
                 if (part instanceof go.Node) {
@@ -44,18 +46,23 @@ const GoJsDiagram = (props) => {
     let _nodes = []
     let _links = [];
 
+
     const generateSubNode = (nodes, mode, parentKey) => {
         if (!nodes || nodes?.length === 0) {
             return;
         }
         for (let node of nodes) {
 
+            //controll the color of the block
             const color = mode === 'child' ? 'orange' : 'lightblue'
             node.key = _nodes.length;
+            //json structore for the node or blocks
             _nodes.push({ key: _nodes.length, text: node.name, color: color })
             const isParent = mode === 'parent'
             const from = isParent ? parentKey : node.key
             const to = isParent ? node.key : parentKey;
+            // json structure for links (arrow in diragram)
+            // this line (from , to) to control the arrow direction on diragram 
             _links.push({ key: -_nodes.length, from: from, to: to })
         }
         for (let node of nodes) {
@@ -65,10 +72,12 @@ const GoJsDiagram = (props) => {
 
     }
 
+    // this function is to generate the structure of node and links 
+    // for the diagram 
     const generateNodes = (data) => {
         _nodes.push({ key: 0, text: data.mainNode, color: 'pink' })
 
-        generateSubNode(data.children, 'child', 0, _nodes, _links)
+        generateSubNode(data.children, 'child', 0)
 
         generateSubNode(data.parents, 'parent', 0)
 

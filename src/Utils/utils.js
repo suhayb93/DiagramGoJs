@@ -3,6 +3,9 @@ import * as go from 'gojs';
 
 
 export const getSearchResult = (value) => {
+
+    //this is The format that should be received from BE (Django Code)
+    //this static data should be removed when data from BE is ready 
     const mockData = {
         mainNode: 'Some Thing Else',
         children:
@@ -87,19 +90,25 @@ export const getSearchResult = (value) => {
             }
         ]
     }
-    // call Api here
     mockData.mainNode = value
-
-    // fetch('localhost:3440/getData', 'GET')
-
+    ////////////////////////////////////////////////////////////
 
 
+    //this code should be uncommitted to send a request to BE 
+    // data should be recived as json with above fomrat 
+    // const reps = await fetch(`localhost:8000/?saarchQuety=${value}`, 'GET')
+
+
+
+
+    // return value should be the value that received from BE 
     return mockData
 
 
 }
 
 
+//Initilization function that set diagram configs 
 export function initDiagram() {
     const $ = go.GraphObject.make;
     // set your license key here before creating the diagram: go.Diagram.licenseKey = "...";

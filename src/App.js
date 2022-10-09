@@ -8,9 +8,10 @@ import HistoryComp from './Components/HistoryComp/HistoryComp';
 import { GlobalStore } from './Utils/context';
 import DiagramInfo from './Components/DiagramInfo/DiagramInfo';
 
+
+//Main component that contains all the project
 function App() {
   const [diagramData, setDiagramData] = useState('')
-  // const [history, setHistory] = useState([])
   const prevSearchValue = useRef('');
   const [store, setStore] = useState({
     history: []
