@@ -4,6 +4,7 @@ import { initDiagram } from "../../Utils/utils";
 import { ReactDiagram } from 'gojs-react';
 import * as go from 'gojs';
 import { GlobalStore } from "../../Utils/context";
+import Loader from "../Loader/Loader";
 
 
 const GoJsDiagram = (props) => {
@@ -57,9 +58,9 @@ const GoJsDiagram = (props) => {
             const color = mode === 'child' ? 'orange' : 'lightblue'
             node.key = _nodes.length;
             //json structore for the node or blocks
-            _nodes.push({ key: _nodes.length, text: node.name, color: color })
+            _nodes.push({ key: _nodes.length, text: node.text, color: color })
             const isParent = mode === 'parent'
-            const from = isParent ? parentKey : node.key
+            const from = isParent ? parentKey : node.key;
             const to = isParent ? node.key : parentKey;
             // json structure for links (arrow in diragram)
             // this line (from , to) to control the arrow direction on diragram 
@@ -75,13 +76,15 @@ const GoJsDiagram = (props) => {
     // this function is to generate the structure of node and links 
     // for the diagram 
     const generateNodes = (data) => {
-        _nodes.push({ key: 0, text: data.mainNode, color: 'pink' })
+        _nodes = [];
+        _links = [];
+        _nodes.push({ key: 0, text: data.text, color: 'pink' })
 
         generateSubNode(data.children, 'child', 0)
 
         generateSubNode(data.parents, 'parent', 0)
 
-        setNodes((state) => state.concat(_nodes))
+        setNodes(_nodes)
 
         setLinks(_links)
 
@@ -89,19 +92,14 @@ const GoJsDiagram = (props) => {
     }
 
     return (
-        <div className="">
-            <div>
-                ...
-                <ReactDiagram
-                    ref={diagramRef}
-                    initDiagram={initDiagram}
-                    divClassName='diagram-component'
-                    nodeDataArray={nodes}
-                    linkDataArray={links}
-                />
-                ...
-            </div>
-
+        <div className="my-2">
+            <ReactDiagram
+                ref={diagramRef}
+                initDiagram={initDiagram}
+                divClassName='diagram-component'
+                nodeDataArray={nodes}
+                linkDataArray={links}
+            />
         </div>
     )
 

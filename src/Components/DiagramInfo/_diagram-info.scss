@@ -1,26 +1,31 @@
 .diagram-info {
-    .main-info-block {
-        background-color: pink;
-        margin-right: 15px;
-        padding: 8px;
-        width: 120px;
-        border-radius: 8px;
-    }
 
-    .parent-info-block {
-        background-color: lightblue;
-        margin-right: 15px;
-        padding: 8px;
-        width: 120px;
-        border-radius: 8px;
-    }
+    display: flex;
+    text-align: center;
+    padding: 16px;
 
-    .child-info-block {
-        background-color: orange;
-        margin-right: 15px;
-        padding: 8px;
-        width: 120px;
-        border-radius: 8px;
-    }
+}
 
+.diagram-info .main-info-block {
+    background-color: pink;
+    margin-right: 15px;
+    padding: 8px;
+    width: 120px;
+    border-radius: 8px;
+}
+
+.diagram-info .parent-info-block {
+    background-color: lightblue;
+    margin-right: 15px;
+    padding: 8px;
+    width: 120px;
+    border-radius: 8px;
+}
+
+.diagram-info .child-info-block {
+    background-color: orange;
+    margin-right: 15px;
+    padding: 8px;
+    width: 120px;
+    border-radius: 8px;
 }

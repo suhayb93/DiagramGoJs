@@ -7,22 +7,29 @@ import { getSearchResult } from './Utils/utils'
 import HistoryComp from './Components/HistoryComp/HistoryComp';
 import { GlobalStore } from './Utils/context';
 import DiagramInfo from './Components/DiagramInfo/DiagramInfo';
+import Loader from './Components/Loader/Loader';
+import SearchResults from './Components/SearchResults/SearchResults';
 
 
 //Main component that contains all the project
 function App() {
   const [diagramData, setDiagramData] = useState('')
   const prevSearchValue = useRef('');
+  const [showLoader, setShowLoader] = useState(false)
   const [store, setStore] = useState({
     history: []
   });
-  const onSearchSubmitted = (value) => {
+  const [searchReult, setSearchResult] = useState([])
+  const onSearchSubmitted = async (value) => {
     if (prevSearchValue.current === value) {
       return
     }
+    setShowLoader(true)
     prevSearchValue.current = value;
-    const _diaramData = getSearchResult(value)
-    setDiagramData(_diaramData);
+    const { search_result, tax_result } = await getSearchResult(value)
+    setShowLoader(false)
+    setDiagramData(tax_result[0]);
+    setSearchResult(search_result)
   }
 
   const addHistoryItem = (item) => {
@@ -45,33 +52,44 @@ function App() {
 
   return (
     <GlobalStore.Provider value={{ history: store.history, addHistoryItem, removeHistoryItem, clearHistory }}>
-      <div className="App container mt-5">
-        <div className="row">
-          <div className="col-lg-6">
-            <div className="row">
+      <div style={{ position: 'relative' }}>
+        {showLoader ?
+          <Loader />
+
+          : null}
+        <div className="App container mt-5">
+
+          <div className="row">
+            <div className="">
               <SearchFrom onSubmit={onSearchSubmitted} />
 
             </div>
+            <div className="col-lg-6 col-md-6 col-sm-6">
 
-            <div className="row history-wrapper">
-              <HistoryComp onHistoryNodeClicked={onSearchSubmitted} />
+              <div>
+                <HistoryComp onHistoryNodeClicked={onSearchSubmitted} />
 
+              </div>
+              <div className="row">
+                <GoJsDiagram
+                  initData={diagramData}
+                  onNodeClicked={onSearchSubmitted}
+                />
+              </div>
+              <div className="row text-start">
+                <DiagramInfo />
+              </div>
             </div>
-            <div className="row">
-              <GoJsDiagram
-                initData={diagramData}
-                onNodeClicked={onSearchSubmitted}
-              />
-            </div>
-            <div className="row text-start">
-              <DiagramInfo />
+            <div className='col-lg-6 col-md-6 col-sm-6 mt-3'>
+              <SearchResults searchReult={searchReult} />
             </div>
           </div>
+
+
+
         </div>
-
-
-
       </div>
+
     </GlobalStore.Provider>
 
   );

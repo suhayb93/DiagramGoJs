@@ -1,17 +1,20 @@
 .history-comp {
+    font-size: 10px;
+
     .history-title {
         margin-bottom: 8px;
         text-align: start;
+        font-size: 12px;
     }
 
     .history-block {
         background-color: pink;
-        margin-right: 15px;
+        margin-right: 5px;
         padding: 8px;
         white-space: nowrap;
         text-overflow: ellipsis;
         overflow: hidden;
-        width: 150px;
+        width: 90px;
         border-radius: 8px;
         cursor: pointer;
     }

@@ -15,22 +15,21 @@ function HistoryComp(props) {
     }
 
     return (
-        <div className='history-comp p-3 border-info border mt-3'>
-            <div className='history-title fw-bold mb-3'>
+        <div className='col-lg-12 col-md-12 history-comp p-2 border-info border mt-3'>
+            <div className='history-title fw-bold mb-1'>
                 History
             </div>
-            <div className="history-content row">
+            <div className="history-content d-flex flex-wrap">
                 {(store || {}).history.map((historyBlock, idx) => {
                     return (
-                        <div onClick={historyItemClicked.bind(null, historyBlock.text, idx)} className="col-lg-4 mb-4" key={idx}>
+                        <div onClick={historyItemClicked.bind(null, historyBlock.text, idx)} key={idx}>
                             <div
-                                className='history-block'
+                                className='history-block mt-1'
                                 title={historyBlock.text}
                             >
                                 {`(${idx + 1})`} {historyBlock.text}
                             </div>
                         </div>
-
 
                     )
                 })}
